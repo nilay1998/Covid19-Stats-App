@@ -21,7 +21,13 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.essentials_button)
     public void onViewClicked() {
-        Intent intent=new Intent(MainActivity.this,EssentialAvtivity.class);
+        Intent intent = new Intent(MainActivity.this, EssentialActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.location_button)
+    public void onLocationViewClicked() {
+        Intent intent = new Intent(MainActivity.this, LocationActivity.class);
         startActivity(intent);
     }
 }

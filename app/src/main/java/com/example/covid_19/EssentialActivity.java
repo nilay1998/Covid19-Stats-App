@@ -18,9 +18,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemSelected;
 
-public class EssentialAvtivity extends AppCompatActivity {
+public class EssentialActivity extends AppCompatActivity {
 
-    private static final String TAG = "EssentialAvtivity";
+    private static final String TAG = "EssentialActivity";
     private EssentialActivityViewModel mEssentialActivityViewModel;
 
     @BindView(R.id.state_spinner)
@@ -33,7 +33,7 @@ public class EssentialAvtivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_essential_avtivity);
+        setContentView(R.layout.activity_essential);
         ButterKnife.bind(this);
 
         mEssentialActivityViewModel = new ViewModelProvider(this).get(EssentialActivityViewModel.class);

@@ -17,7 +17,6 @@ import static android.content.ContentValues.TAG;
 public class EssentialRepo {
     private static EssentialRepo instance;
 
-
     public static EssentialRepo getInstance()
     {
         if(instance==null)
@@ -28,7 +27,6 @@ public class EssentialRepo {
     public MutableLiveData<EssentialModel> getmEssentialList()
     {
         MutableLiveData<EssentialModel> data=new MutableLiveData<>();
-
         Retrofit retrofit = NetworkClient.getRetrofitClient();
         RequestService requestService = retrofit.create(RequestService.class);
         Call<EssentialModel> call = requestService.requestEssentials();

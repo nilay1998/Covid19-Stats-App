@@ -9,11 +9,24 @@
     <Button
         android:id="@+id/essentials_button"
         android:layout_width="273dp"
-        android:layout_height="48dp"
+        android:layout_height="0dp"
         android:layout_marginTop="293dp"
+        android:layout_marginBottom="49dp"
         android:text="Essentials"
+        app:layout_constraintBottom_toTopOf="@+id/location_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/location_button"
+        android:layout_width="273dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="293dp"
+        android:text="Infected Location"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/essentials_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
