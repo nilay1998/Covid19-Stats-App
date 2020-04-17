@@ -79,4 +79,9 @@ public class EssentialActivityViewModel extends ViewModel {
         Collections.sort(list);
         return list;
     }
+
+    public ArrayList<ResourcesModel> getEssentialsFiltered(String state, String category)
+    {
+        return hashMap.get(state).get(category);
+    }
 }

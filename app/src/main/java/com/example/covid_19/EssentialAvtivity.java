@@ -4,21 +4,15 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.example.covid_19.Adapters.EssentialsAdapter;
 import com.example.covid_19.Service.Models.EssentialModel;
-import com.example.covid_19.Service.Models.ResourcesModel;
 import com.example.covid_19.ViewModels.EssentialActivityViewModel;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +27,8 @@ public class EssentialAvtivity extends AppCompatActivity {
     Spinner stateSpinner;
     @BindView(R.id.category_spinner)
     Spinner categorySpinner;
+    @BindView(R.id.essential_recyclerView)
+    RecyclerView essentialRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +36,7 @@ public class EssentialAvtivity extends AppCompatActivity {
         setContentView(R.layout.activity_essential_avtivity);
         ButterKnife.bind(this);
 
-        mEssentialActivityViewModel= new ViewModelProvider(this).get(EssentialActivityViewModel.class);
+        mEssentialActivityViewModel = new ViewModelProvider(this).get(EssentialActivityViewModel.class);
         mEssentialActivityViewModel.init();
         mEssentialActivityViewModel.getEssentials().observe(this, new Observer<EssentialModel>() {
             @Override
@@ -51,16 +47,14 @@ public class EssentialAvtivity extends AppCompatActivity {
         });
     }
 
-    public void addItemsOnStateSpinner()
-    {
+    public void addItemsOnStateSpinner() {
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, mEssentialActivityViewModel.getUniqueState());
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         stateSpinner.setAdapter(dataAdapter);
     }
 
-    public void addItemsOnCategorySpinner(String state)
-    {
+    public void addItemsOnCategorySpinner(String state) {
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, mEssentialActivityViewModel.getStateCategories(state));
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -68,7 +62,20 @@ public class EssentialAvtivity extends AppCompatActivity {
     }
 
     @OnItemSelected(R.id.state_spinner)
-    public void spinnerItemSelected(Spinner spinner, int position) {
+    public void stateSpinnerItemSelected(Spinner spinner, int position) {
         addItemsOnCategorySpinner(spinner.getItemAtPosition(position).toString());
+    }
+
+    @OnItemSelected(R.id.category_spinner)
+    public void categorySpinnerItemSelected(Spinner spinner, int position) {
+        String state = stateSpinner.getSelectedItem().toString();
+        String category = spinner.getItemAtPosition(position).toString();
+        inflateRecyclerView(state, category);
+    }
+
+    private void inflateRecyclerView(String state, String category) {
+        EssentialsAdapter adapter=new EssentialsAdapter(mEssentialActivityViewModel.getEssentialsFiltered(state,category));
+        essentialRecyclerView.setAdapter(adapter);
+        essentialRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
     }
 }
