@@ -46,12 +46,12 @@ public class EssentialAvtivity extends AppCompatActivity {
             @Override
             public void onChanged(EssentialModel essentialModel) {
                 mEssentialActivityViewModel.setmEssentialList();
-                addItemsOnSpinner();
+                addItemsOnStateSpinner();
             }
         });
     }
 
-    public void addItemsOnSpinner()
+    public void addItemsOnStateSpinner()
     {
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, mEssentialActivityViewModel.getUniqueState());
@@ -59,8 +59,16 @@ public class EssentialAvtivity extends AppCompatActivity {
         stateSpinner.setAdapter(dataAdapter);
     }
 
+    public void addItemsOnCategorySpinner(String state)
+    {
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, mEssentialActivityViewModel.getStateCategories(state));
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categorySpinner.setAdapter(dataAdapter);
+    }
+
     @OnItemSelected(R.id.state_spinner)
     public void spinnerItemSelected(Spinner spinner, int position) {
-
+        addItemsOnCategorySpinner(spinner.getItemAtPosition(position).toString());
     }
 }
