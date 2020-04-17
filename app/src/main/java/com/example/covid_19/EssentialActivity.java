@@ -1,7 +1,9 @@
 package com.example.covid_19;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,19 +18,25 @@ import com.example.covid_19.ViewModels.EssentialActivityViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.OnItemSelected;
 
 public class EssentialActivity extends AppCompatActivity {
 
     private static final String TAG = "EssentialActivity";
+
     private EssentialActivityViewModel mEssentialActivityViewModel;
 
+    @BindView(R.id.filter_linearLayout)
+    LinearLayout filterLinearLayout;
     @BindView(R.id.state_spinner)
     Spinner stateSpinner;
     @BindView(R.id.category_spinner)
     Spinner categorySpinner;
     @BindView(R.id.essential_recyclerView)
     RecyclerView essentialRecyclerView;
+//    @BindView(R.id.searchButton)
+//    Button searchButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,16 +74,22 @@ public class EssentialActivity extends AppCompatActivity {
         addItemsOnCategorySpinner(spinner.getItemAtPosition(position).toString());
     }
 
-    @OnItemSelected(R.id.category_spinner)
-    public void categorySpinnerItemSelected(Spinner spinner, int position) {
-        String state = stateSpinner.getSelectedItem().toString();
-        String category = spinner.getItemAtPosition(position).toString();
-        inflateRecyclerView(state, category);
-    }
+//    @OnItemSelected(R.id.category_spinner)
+//    public void categorySpinnerItemSelected(Spinner spinner, int position) {
+//        String state = stateSpinner.getSelectedItem().toString();
+//        String category = spinner.getItemAtPosition(position).toString();
+//
+//    }
 
     private void inflateRecyclerView(String state, String category) {
-        EssentialsAdapter adapter=new EssentialsAdapter(mEssentialActivityViewModel.getEssentialsFiltered(state,category));
+        EssentialsAdapter adapter = new EssentialsAdapter(mEssentialActivityViewModel.getEssentialsFiltered(state, category));
         essentialRecyclerView.setAdapter(adapter);
         essentialRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+    }
+
+    @OnClick(R.id.searchButton)
+    public void onViewClicked() {
+        inflateRecyclerView(stateSpinner.getSelectedItem().toString(), categorySpinner.getSelectedItem().toString());
+        filterLinearLayout.setVisibility(View.INVISIBLE);
     }
 }
