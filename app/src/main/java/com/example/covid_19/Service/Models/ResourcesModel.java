@@ -1,8 +1,6 @@
-package com.example.covid_19.Retrofit;
+package com.example.covid_19.Service.Models;
 
-import androidx.annotation.NonNull;
-
-public class Resources {
+public class ResourcesModel {
     private String city;
 
     private String descriptionandorserviceprovided;

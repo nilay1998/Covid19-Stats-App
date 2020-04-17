@@ -1,4 +1,4 @@
-package com.example.covid_19.Retrofit;
+package com.example.covid_19.Service.Retrofit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;

@@ -1,16 +1,17 @@
 package com.example.covid_19;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.covid_19.Retrofit.Model;
-import com.example.covid_19.Retrofit.NetworkClient;
-import com.example.covid_19.Retrofit.RequestService;
-import com.example.covid_19.Retrofit.Resources;
+import com.example.covid_19.Service.Models.EssentialModel;
+import com.example.covid_19.Service.Models.ResourcesModel;
+import com.example.covid_19.ViewModels.EssentialActivityViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,16 +23,12 @@ import java.util.Set;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemSelected;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class EssentialAvtivity extends AppCompatActivity {
 
     private static final String TAG = "EssentialAvtivity";
-    ArrayList<Resources> mEssentialList;
-    
+    private EssentialActivityViewModel mEssentialActivityViewModel;
+
     @BindView(R.id.state_spinner)
     Spinner stateSpinner;
     @BindView(R.id.category_spinner)
@@ -43,40 +40,21 @@ public class EssentialAvtivity extends AppCompatActivity {
         setContentView(R.layout.activity_essential_avtivity);
         ButterKnife.bind(this);
 
-        Retrofit retrofit = NetworkClient.getRetrofitClient();
-        RequestService requestService = retrofit.create(RequestService.class);
-        Call<Model> call = requestService.requestEssentials();
-        call.enqueue(new Callback<Model>() {
+        mEssentialActivityViewModel= new ViewModelProvider(this).get(EssentialActivityViewModel.class);
+        mEssentialActivityViewModel.init();
+        mEssentialActivityViewModel.getEssentials().observe(this, new Observer<EssentialModel>() {
             @Override
-            public void onResponse(Call<Model> call, Response<Model> response) {
-                Log.e(TAG, "onResponse: Success");
-                mEssentialList = new ArrayList<>(Arrays.asList(response.body().getResources()));
+            public void onChanged(EssentialModel essentialModel) {
+                mEssentialActivityViewModel.setmEssentialList();
                 addItemsOnSpinner();
             }
-
-            @Override
-            public void onFailure(Call<Model> call, Throwable t) {
-                Log.e(TAG, "onFailure: "+t.getMessage());
-            }
         });
-
-
     }
 
     public void addItemsOnSpinner()
     {
-        Set<String> set = new LinkedHashSet<>();
-        for(int i=0;i<mEssentialList.size();i++)
-        {
-            if(mEssentialList.get(i).getState()!=null)
-                set.add(mEssentialList.get(i).getState());
-        }
-
-        List<String> list=new ArrayList<>();
-        list.addAll(set);
-        Collections.sort(list);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, list);
+                android.R.layout.simple_spinner_item, mEssentialActivityViewModel.getUniqueState());
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         stateSpinner.setAdapter(dataAdapter);
     }
