@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -58,6 +59,9 @@ public class LocationActivityViewModel extends ViewModel {
                 arrayList.add(travelHistoryModel);
             }
         }
+        HashSet<TravelHistoryModel> hashSet=new HashSet<>(arrayList);
+        arrayList.clear();
+        arrayList.addAll(hashSet);
 
         Collections.sort(arrayList, new Comparator<TravelHistoryModel>()
         {
@@ -66,11 +70,7 @@ public class LocationActivityViewModel extends ViewModel {
                 return dis.intValue();
             }
         });
-
-        Set<TravelHistoryModel> set = new LinkedHashSet<>();
-        set.addAll(arrayList);
-        arrayList.clear();
-        arrayList.addAll(set);
+        
         return arrayList;
     }
 
