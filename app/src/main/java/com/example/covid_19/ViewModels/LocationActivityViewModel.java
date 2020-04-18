@@ -16,6 +16,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import static android.content.ContentValues.TAG;
 
@@ -65,6 +67,10 @@ public class LocationActivityViewModel extends ViewModel {
             }
         });
 
+        Set<TravelHistoryModel> set = new LinkedHashSet<>();
+        set.addAll(arrayList);
+        arrayList.clear();
+        arrayList.addAll(set);
         return arrayList;
     }
 

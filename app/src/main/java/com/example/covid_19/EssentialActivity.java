@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -24,9 +25,10 @@ import butterknife.OnItemSelected;
 public class EssentialActivity extends AppCompatActivity {
 
     private static final String TAG = "EssentialActivity";
-
     private EssentialActivityViewModel mEssentialActivityViewModel;
 
+    @BindView(R.id.addFilter_tv)
+    TextView addFilterTv;
     @BindView(R.id.filter_linearLayout)
     LinearLayout filterLinearLayout;
     @BindView(R.id.state_spinner)
@@ -91,5 +93,12 @@ public class EssentialActivity extends AppCompatActivity {
     public void onViewClicked() {
         inflateRecyclerView(stateSpinner.getSelectedItem().toString(), categorySpinner.getSelectedItem().toString());
         filterLinearLayout.setVisibility(View.INVISIBLE);
+        addFilterTv.setClickable(true);
+    }
+
+    @OnClick(R.id.addFilter_tv)
+    public void onTextViewClicked() {
+        filterLinearLayout.setVisibility(View.VISIBLE);
+        addFilterTv.setClickable(false);
     }
 }
